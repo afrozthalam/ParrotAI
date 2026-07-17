@@ -101,7 +101,6 @@ Once the loading overlay disappears (which means the background Chrome tab has s
 
 ---
 
-## 📜 Credits & License
-
-*   **Author:** Created and developed by [Antigravity](https://github.com/Antigravity) as a premium portfolio project.
-*   **Disclaimer:** This is a proxy/automation tool created for educational and personal showcasing purposes. It relies on public resources hosted by third-party platforms.
+## 📜 Credits
+* **Created by**: Afroz Alam
+* **Contact Email**: [httppirate@protonmail.com](mailto:httppirate@protonmail.com)
