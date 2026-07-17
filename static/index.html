@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PARROT.ai</title>
+    <link rel="icon" type="image/png" href="/static/bird.png">
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="PARROT.ai is an elegant, high-speed, headless AI generation studio powered by persistent background rendering.">
+    <meta name="keywords" content="AI image generator, parrot.ai, image proxy, stable diffusion, minimalist design">
+    <meta name="author" content="Antigravity">
+    
+    <!-- Google Fonts: Space Grotesk and Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="/static/style.css?v=15">
+</head>
+<body>
+    <!-- Startup Synchronizer Overlay -->
+    <div id="startupOverlay" class="startup-overlay active">
+        <div class="startup-overlay-content">
+            <div class="brand-logo-container" style="padding-top: 0; margin-bottom: 24px;">
+                <h1 class="brand-title" style="font-size: 2.8rem;">
+                    PARROT<span class="dot-wrapper">.<span class="micro-parrot">
+                        <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M25 70 C 25 40, 45 20, 70 20 C 85 20, 90 30, 85 40 C 80 50, 75 45, 65 60 C 55 75, 40 80, 25 70 Z" />
+                            <path d="M85 40 C 95 45, 90 60, 75 55" />
+                            <circle cx="65" cy="35" r="4" fill="currentColor" stroke="none" />
+                        </svg>
+                    </span></span>ai
+                </h1>
+            </div>
+            <div class="startup-spinner-container">
+                <i class="fa-solid fa-circle-notch fa-spin startup-spinner"></i>
+                <p id="startupStatusText">Connecting to PARROT.ai Synthesizer Engine...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container">
+        
+        <!-- ================= VIEW 1: LANDING DASHBOARD ================= -->
+        <section id="viewLanding" class="page-view active">
+            <div class="landing-dashboard-layout">
+                <!-- Left Panel: Prompt & Configuration -->
+                <div class="landing-dashboard-left">
+                    <!-- Floating History Toggle Button -->
+                    <button type="button" id="toggleLandingHistoryBtn" class="action-icon-btn active" title="Toggle History Gallery">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </button>
+                    <!-- Premium Mascot Dot-Centered Logo -->
+                    <div class="brand-logo-container">
+                        <a href="/" style="text-decoration: none;">
+                            <h1 class="brand-title">
+                                PARROT<span class="dot-wrapper">.<span class="micro-parrot">
+                                    <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M25 70 C 25 40, 45 20, 70 20 C 85 20, 90 30, 85 40 C 80 50, 75 45, 65 60 C 55 75, 40 80, 25 70 Z" />
+                                        <path d="M85 40 C 95 45, 90 60, 75 55" />
+                                        <circle cx="65" cy="35" r="4" fill="currentColor" stroke="none" />
+                                    </svg>
+                                </span></span>ai
+                            </h1>
+                        </a>
+                    </div>
+
+                    <!-- Brand Subtitle Short Description -->
+                    <div class="brand-subtitle-container">
+                        <p class="brand-subtitle">Generate realistic and uncensored images unlimited</p>
+                    </div>
+
+                    <!-- Spacious Centered Landing Prompt Bar & Integrated Options -->
+                    <form id="landingForm" class="landing-prompt-container" onsubmit="event.preventDefault();">
+                        <div class="prompt-bar-tall">
+                            <textarea id="promptInputLanding" placeholder="What are we generating today?..."></textarea>
+                            <div class="prompt-bar-actions">
+                                <div class="prompt-left-actions" style="display: flex; align-items: center; gap: 8px;">
+                                    <button type="button" id="toggleLandingSettingsBtn" class="action-icon-btn" title="Settings">
+                                        <i class="fa-solid fa-sliders"></i>
+                                    </button>
+                                    <button type="button" id="enhancePromptBtnLanding" class="utility-pill-btn" title="Enhance prompt with photographic details">
+                                        <i class="fa-solid fa-wand-magic-sparkles"></i> Enhance Prompt
+                                    </button>
+                                </div>
+                                <button type="submit" class="premium-generate-btn">
+                                    <span>Create</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Expanded Settings Block under prompt bar -->
+                        <div id="landingSettingsPanel" class="landing-settings-card">
+                            <div class="settings-grid-row-four">
+                                <div class="input-field">
+                                    <label for="styleSelectorLanding">Art Style Theme</label>
+                                    <select id="styleSelectorLanding">
+                                        <option value="">Loading styles...</option>
+                                    </select>
+                                </div>
+                                <div class="input-field">
+                                    <label for="styleMixSelectorLanding">Art Style Mixing</label>
+                                    <select id="styleMixSelectorLanding">
+                                        <option value="ref:optionKeyName:Not Mix">Not Mix</option>
+                                    </select>
+                                </div>
+                                <div class="input-field">
+                                    <label for="ratioSelectorLanding">Aspect Ratio</label>
+                                    <select id="ratioSelectorLanding">
+                                        <option value="512x512">Square (1:1)</option>
+                                        <option value="512x768" selected>Portrait (2:3)</option>
+                                        <option value="768x512">Landscape (3:2)</option>
+                                    </select>
+                                </div>
+                                <div class="input-field">
+                                    <label for="numImagesSelectorLanding">Batch Count</label>
+                                    <select id="numImagesSelectorLanding">
+                                        <option value="1">1 Image</option>
+                                        <option value="2">2 Images</option>
+                                        <option value="3">3 Images</option>
+                                        <option value="4" selected>4 Images</option>
+                                        <option value="5">5 Images</option>
+                                        <option value="6">6 Images</option>
+                                        <option value="7">7 Images</option>
+                                        <option value="8">8 Images</option>
+                                        <option value="12">12 Images</option>
+                                        <option value="16">16 Images</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-grid-row-two">
+                                <div class="input-field">
+                                    <div class="slider-header-label">
+                                        <label for="guidanceSliderLanding">Guidance (CFG)</label>
+                                        <span id="guidanceValueLanding">7</span>
+                                    </div>
+                                    <input type="range" id="guidanceSliderLanding" min="1" max="25" value="7">
+                                </div>
+                                <div class="input-field">
+                                    <label for="seedInputLanding">Custom Seed (Optional)</label>
+                                    <input type="text" id="seedInputLanding" placeholder="Random">
+                                </div>
+                            </div>
+
+                            <div class="input-field full-width">
+                                <div class="field-header-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                    <label for="negativePromptInputLanding">Negative Prompt (Avoid)</label>
+                                    <button type="button" id="fillDefaultNegativeBtnLanding" class="utility-text-btn">
+                                        <i class="fa-solid fa-circle-plus"></i> Load Default Negatives
+                                    </button>
+                                </div>
+                                <textarea id="negativePromptInputLanding" placeholder="low quality, blurry, deformed..."></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Right Panel: History Gallery -->
+                <div class="landing-dashboard-right">
+                    <section class="gallery-container">
+                        <div class="gallery-header">
+                            <h2>History</h2>
+                            <div class="gallery-controls">
+                                <div class="filter-toggle-wrapper">
+                                    <span class="toggle-text">Safe Mode Only</span>
+                                    <label class="premium-switch">
+                                        <input type="checkbox" id="galleryFilterToggle" checked>
+                                        <span class="switch-slider"></span>
+                                    </label>
+                                </div>
+                                <button id="clearHistoryBtn" class="clear-btn"><i class="fa-solid fa-trash-can"></i> Clear history</button>
+                            </div>
+                        </div>
+                        
+                        <div class="gallery-empty" id="galleryEmpty">
+                            <p>Your generated creations will collect here automatically.</p>
+                        </div>
+                        
+                        <div class="gallery-grid" id="galleryGrid">
+                            <!-- Dynamic rendering -->
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= VIEW 2: DEDICATED GENERATION PAGE ================= -->
+        <section id="viewGeneration" class="page-view">
+            <div class="workspace-split">
+                
+                <!-- Left Sidebar: Unified Parameters Control Deck -->
+                <aside class="workspace-sidebar" id="mobileTabDeck">
+                    <div class="sidebar-brand-box">
+                        <a href="/" style="text-decoration: none;">
+                            <h1 class="brand-title mini-version">
+                                PARROT<span class="dot-wrapper">.<span class="micro-parrot">
+                                    <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M25 70 C 25 40, 45 20, 70 20 C 85 20, 90 30, 85 40 C 80 50, 75 45, 65 60 C 55 75, 40 80, 25 70 Z" />
+                                        <path d="M85 40 C 95 45, 90 60, 75 55" />
+                                        <circle cx="65" cy="35" r="4" fill="currentColor" stroke="none" />
+                                    </svg>
+                                </span></span>ai
+                            </h1>
+                        </a>
+                    </div>
+                    
+                    <form id="generatorForm" class="sidebar-form-container" onsubmit="event.preventDefault();">
+                        <!-- Tall Prompt Block inside sidebar -->
+                        <div class="sidebar-prompt-card">
+                            <label class="section-label">Creation Prompt</label>
+                            <textarea id="promptInput" placeholder="What are we generating next?..." required></textarea>
+                            
+                            <div class="sidebar-prompt-actions" style="margin-bottom: 12px;">
+                                <button type="button" id="enhancePromptBtn" class="utility-pill-btn" style="width: 100%;">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> Enhance Prompt
+                                </button>
+                            </div>
+                            
+                            <!-- Premium Generate Button -->
+                            <button type="submit" id="generateBtn" class="premium-generate-btn" style="width: 100%; border-radius: var(--border-radius-sm); height: 46px;">
+                                <span>Create</span>
+                            </button>
+                        </div>
+                        
+                        <!-- Organized settings -->
+                        <div class="sidebar-settings-card">
+                            <div class="sidebar-field-row">
+                                <div class="input-field">
+                                    <label for="styleSelector">Art Style Theme</label>
+                                    <select id="styleSelector">
+                                        <option value="">Loading styles...</option>
+                                    </select>
+                                </div>
+                                <div class="input-field">
+                                    <label for="styleMixSelector">Art Style Mixing</label>
+                                    <select id="styleMixSelector">
+                                        <option value="ref:optionKeyName:Not Mix">Not Mix</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="sidebar-field-row">
+                                <div class="input-field">
+                                    <label for="ratioSelector">Aspect Ratio</label>
+                                    <select id="ratioSelector">
+                                        <option value="512x512">Square (1:1)</option>
+                                        <option value="512x768" selected>Portrait (2:3)</option>
+                                        <option value="768x512">Landscape (3:2)</option>
+                                    </select>
+                                </div>
+                                <div class="input-field">
+                                    <label for="numImagesSelector">Batch Count</label>
+                                    <select id="numImagesSelector">
+                                        <option value="1">1 Image</option>
+                                        <option value="2">2 Images</option>
+                                        <option value="3">3 Images</option>
+                                        <option value="4" selected>4 Images</option>
+                                        <option value="5">5 Images</option>
+                                        <option value="6">6 Images</option>
+                                        <option value="7">7 Images</option>
+                                        <option value="8">8 Images</option>
+                                        <option value="12">12 Images</option>
+                                        <option value="16">16 Images</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="input-field">
+                                <div class="slider-header-label">
+                                    <label for="guidanceSlider">Guidance (CFG)</label>
+                                    <span id="guidanceValue">7</span>
+                                </div>
+                                <input type="range" id="guidanceSlider" min="1" max="25" value="7">
+                            </div>
+
+                             <div class="input-field">
+                                <div class="field-header-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                    <label for="negativePromptInput">Negative Prompt (Avoid)</label>
+                                    <button type="button" id="fillDefaultNegativeBtn" class="utility-text-btn">
+                                        <i class="fa-solid fa-circle-plus"></i> Default
+                                    </button>
+                                </div>
+                                <textarea id="negativePromptInput" placeholder="low quality, blurry, deformed..."></textarea>
+                            </div>
+
+                            <div class="input-field">
+                                <label for="seedInput">Custom Seed (Optional)</label>
+                                <input type="text" id="seedInput" placeholder="Random">
+                            </div>
+                        </div>
+                    </form>
+                </aside>
+
+                <!-- Right Area: Header, Status and Rendering Carousel Area -->
+                <main class="workspace-results-panel" id="mobileTabCanvas">
+                    <!-- Miniature Header controls -->
+                    <header class="workspace-results-header desktop-only-header">
+                        <button type="button" id="backToGeneratorBtn" class="back-to-home-btn">
+                            <span>← Exit</span>
+                        </button>
+                        
+                        <div class="generation-header-center-title">Creation Canvas</div>
+                        
+                        <button type="button" id="toggleSidebarBtn" class="action-icon-btn toggle-sidebar" title="Toggle Parameters Deck">
+                            <i class="fa-solid fa-sliders"></i>
+                        </button>
+                    </header>
+
+                    <!-- Reconnection Toast Banner -->
+                    <div id="reconnectToast" class="reconnect-notification">
+                        <i class="fa-solid fa-circle-nodes fa-spin"></i>
+                        <span id="reconnectMessage">Network fluctuation detected. Reconnecting...</span>
+                    </div>
+
+                    <!-- Inner Viewport card container holding Loader or Carousels -->
+                    <div class="results-viewport-card">
+                        
+                        <!-- Viewport: Ultra-Premium Loading Synthesis State -->
+                        <div id="stateLoading" class="viewport-state-element">
+                            <div class="premium-progress-loader">
+                                <div class="sleek-progress-container">
+                                    <div class="sleek-progress-bar" id="loadingProgressBar"></div>
+                                </div>
+                                <div class="sleek-progress-text">
+                                    <span id="loadingProgressStep">Initializing parameters...</span>
+                                    <span class="sleek-percent" id="loadingProgressPercent">0%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Active Sliding Carousel State -->
+                        <div class="viewport-state-element" id="stateResult">
+                            <div class="carousel-outer">
+                                <div class="carousel-track" id="viewportGridCanvas">
+                                    <!-- Populated dynamic slides -->
+                                </div>
+                                
+                                <button class="nav-arrow left" id="carouselPrevBtn" type="button" disabled>
+                                    <i class="fa-solid fa-chevron-left"></i>
+                                </button>
+                                <button class="nav-arrow right" id="carouselNextBtn" type="button" disabled>
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </button>
+                                
+                                <div class="carousel-dot-indicators" id="carouselIndicators"></div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </main>
+                
+            </div>
+            
+            <!-- Mobile Bottom Navigation Bar (Visible only on mobile inside Workspace) -->
+            <nav class="mobile-bottom-nav">
+                <button class="nav-tab active" data-target="mobileTabDeck">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>Deck</span>
+                </button>
+                <button class="nav-tab" data-target="mobileTabCanvas">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>Canvas</span>
+                </button>
+                <button class="nav-tab" id="navTabGallery" data-target="mobileTabGallery">
+                    <i class="fa-solid fa-images"></i>
+                    <span>Gallery</span>
+                </button>
+            </nav>
+            
+        </section>
+        
+    </div>
+
+    <!-- Fullscreen Non-Cropping Modal Viewport Frame -->
+    <div class="modal" id="fullscreenModal">
+        <div class="modal-backdrop" id="modalBackdrop"></div>
+        <div class="modal-window">
+            <button class="modal-close-trigger" id="modalCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-layout">
+                <!-- Contain image stage -->
+                <div class="modal-image-stage">
+                    <img id="modalImage" src="" alt="PARROT AI Masterpiece View">
+                </div>
+                <!-- Controls and stats sidebar -->
+                <div class="modal-meta-sidebar">
+                    <div class="modal-prompt-container">
+                        <h3 id="modalPrompt">Prompt description...</h3>
+                        <button type="button" id="modalPromptExpandBtn" class="prompt-expand-btn">Read more</button>
+                    </div>
+                    <div class="metadata-rows">
+                        <span id="modalMetaRatio"><i class="fa-solid fa-crop-simple"></i> Portrait</span>
+                        <span id="modalMetaStyle"><i class="fa-solid fa-palette"></i> Style</span>
+                        <span id="modalMetaSeed"><i class="fa-solid fa-fingerprint"></i> Seed</span>
+                    </div>
+                    <div class="modal-sidebar-buttons">
+                        <button id="modalActionDownload" class="sidebar-primary-btn"><i class="fa-solid fa-download"></i> Download PNG</button>
+                        <button id="modalActionReuse" class="sidebar-secondary-btn"><i class="fa-solid fa-repeat"></i> Reuse Parameters</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/app.js?v=15"></script>
+</body>
+</html>

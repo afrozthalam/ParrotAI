@@ -1,0 +1,143 @@
+================================================================================
+                           PARROT.ai - PROJECT DESCRIPTION
+================================================================================
+
+This document describes the PARROT.ai project in simple terms. It explains what 
+the project is, what it does, how it works, what tools it uses, and how to run it.
+
+--------------------------------------------------------------------------------
+1. WHAT IS THIS PROJECT?
+--------------------------------------------------------------------------------
+PARROT.ai is a tool designed to give you **unlimited, 100% free AI image generation**. 
+
+Normally, generating high-quality AI images requires paying for expensive monthly 
+subscriptions or owning a powerful computer with a costly graphics card. PARROT.ai 
+solves this by acting as a **smart proxy** for popular, large-scale image generating 
+websites (like Perchance, which hosts massive AI generation engines). 
+
+Instead of visiting those websites directly and dealing with ads, slow layouts, 
+or strict user limits, PARROT.ai hooks into these large platforms in the background 
+and routes your requests through them. This gives you a premium, private, and 
+completely unlimited image generation studio on your local computer, free of charge.
+
+--------------------------------------------------------------------------------
+2. WHAT EXACTLY DOES IT DO?
+--------------------------------------------------------------------------------
+Here is what this project does for you:
+*   **Unlimited Free Image Generation:** There are no subscription fees, credit 
+    limits, tokens, or daily caps. You can generate hundreds or thousands of 
+    images every day for free because the tool leverages large, open-access public 
+    generation systems.
+*   **Proxies Large Image Sites:** It acts as a bridge to big online image-generating 
+    services. It takes your prompt and settings, sends them directly to the big 
+    platforms in the background, triggers their generation systems, and retrieves 
+    the finished images.
+*   **Bypasses Content Filters & Pop-ups:** Public image sites often show safety 
+    warnings or content check screens (especially for mature/NSFW keywords). 
+    PARROT.ai automatically bypasses these filters in the background so you 
+    can generate creative content without interruption.
+*   **Streams Images Instantly:** Instead of making you wait for a whole batch 
+    of images to complete, it streams them directly onto your dashboard one-by-one 
+    the very second they are rendered.
+*   **Saves Images to Your Drive:** Every image generated is automatically saved 
+    as a high-quality PNG file in a local folder called "gens" on your computer.
+*   **Keeps a Local History:** It stores your past images and settings in your 
+    browser history so you can review them, filter out mature results, or instantly 
+    reuse prompts and seeds for new generations.
+
+--------------------------------------------------------------------------------
+3. HOW DOES IT WORK (BEHIND THE SCENES)?
+--------------------------------------------------------------------------------
+The project uses a split proxy architecture:
+
+1.  **The User Dashboard (Frontend):**
+    You type your description ("prompt") and settings (size, artistic style, CFG 
+    guidance, batch size) on a clean, dark-themed dashboard on your browser. 
+    This webpage sends the request to the local backend server.
+
+2.  **The Proxy Browser (Backend):**
+    When the backend server starts, it secretly opens a real Google Chrome browser 
+    in the background. It moves the Chrome window off-screen (to a hidden coordinate 
+    like -2000, -2000) so it does not clutter your desktop. 
+    Because it uses a real Chrome browser window, the target image websites treat 
+    it as a normal human visitor, bypassing bot-detection blocks (like Cloudflare).
+
+3.  **Automatic Interaction (React Injection):**
+    The backend takes your settings and prompts, and programmatically injects them 
+    into the text boxes and dropdown selectors of the target image site. It uses 
+    special JavaScript events to make the site think a human is typing, which is 
+    required for React-based web applications to register inputs.
+
+4.  **Content Safety Bypass:**
+    The backend runs a safety bypass script that monitors the target page. If a 
+    pop-up warning appears (e.g., "NSFW Warning" or "Are you over 18?"), the script 
+    automatically checks the approval boxes, selects "Disable filter permanently," 
+    and clicks the confirm buttons instantly.
+
+5.  **Scraping & SSE Streaming:**
+    The backend clicks the "Generate" button. It monitors the page's HTML structure, 
+    and the moment a new image or canvas rendering appears, it captures the raw 
+    image data. It saves a local copy on your hard disk and immediately streams 
+    the image code back to your browser window using Server-Sent Events (SSE).
+
+6.  **Concurrency (Multiple Tabs):**
+    To support multiple generations at once, the backend handles a pool of browser 
+    tabs. If you request a new image while the main tab is busy, it opens a temporary 
+    tab in the hidden Chrome window, generates the image, streams it back, and 
+    immediately closes that tab to save your computer's memory.
+
+--------------------------------------------------------------------------------
+4. WHAT TECHNOLOGIES ARE USED?
+--------------------------------------------------------------------------------
+*   **Python:** The programming language used to build the backend server.
+*   **FastAPI:** A modern framework used to create the server endpoints and handle 
+    image streaming.
+*   **DrissionPage:** A powerful Python library used to automate and scrape the 
+    hidden Google Chrome browser. It combines browser control with fast HTTP requests.
+*   **HTML5, CSS3, & Vanilla JavaScript:** Used to build the user dashboard. The 
+    styles use a luxury "Sage-Mint Obsidian" dark theme, and the JavaScript handles 
+    SSE streaming, local storage history, and manual downloads.
+*   **Uvicorn:** A fast server tool used to launch the FastAPI app.
+
+--------------------------------------------------------------------------------
+5. HOW TO RUN THE PROJECT?
+--------------------------------------------------------------------------------
+**Step 1: Install Python and Chrome**
+Ensure Python (3.10+) and Google Chrome are installed on your computer.
+
+**Step 2: Install Libraries**
+Open a terminal in the project folder and run:
+```bash
+pip install -r requirements.txt
+```
+
+**Step 3: Launch the App**
+Start the FastAPI server:
+```bash
+python -u app.py
+```
+
+**Step 4: Generate Images**
+Open your browser and navigate to `http://127.0.0.1:8000`. Once the background 
+warmup finishes, you can start generating unlimited images for free.
+
+--------------------------------------------------------------------------------
+6. FILE-BY-FILE SUMMARY OF THE PROJECT
+--------------------------------------------------------------------------------
+*   **app.py:** The backend server file. It boots Chrome, injects inputs, bypasses 
+    safety filters, grabs generated images, and streams them.
+*   **requirements.txt:** Lists the required Python packages to run the app.
+*   **all_styles.json:** Contains the configuration names for all 106 art style templates.
+*   **static/index.html:** The webpage document forming the dashboard layout.
+*   **static/style.css:** The visual style sheet containing theme colors and layouts.
+*   **static/app.js:** Frontend script that communicates with the backend stream, 
+    manages user history, and handles image downloading.
+*   **gens/** (Folder): The directory where all generated image files are stored 
+    on your computer.
+*   **extract_all_styles.py:** A small utility script used to extract the style 
+    list from Perchance.
+*   **analyze_qinegen.py** & **analyze_ufsykzlant.py:** Scripts used during 
+    development to inspect the structures of Perchance websites.
+*   **scratch_*.py** & **test_*.py:** Diagnostic tests used to check element 
+    filling, tab control, and network connectivity.
+================================================================================
