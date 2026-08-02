@@ -103,4 +103,4 @@ Once the loading overlay disappears (which means the background Chrome tab has s
 
 ## 📜 Credits
 * **Created by**: Afroz Alam
-* **Contact Email**: [httppirate@protonmail.com](mailto:httppirate@protonmail.com)
+* **Contact Email**: [codefather.inbox@gmailcom](mailto:codefather.inbox@gmailcom)
